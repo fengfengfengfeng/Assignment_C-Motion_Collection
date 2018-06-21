@@ -1,0 +1,101 @@
+html, body{
+  height:100%;
+  width:100%;
+  overflow: hidden; //background colour
+}
+body{
+  font:normal 1em/1.45em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color:white;
+  background: linear-gradient(337deg, #1b5665, #e9956c, #a8c2c8, #7d928b, #f7d230);
+  background-size: 1000% 1000%;
+
+  -webkit-animation: background-color 9s ease infinite;
+  -moz-animation: background-color 9s ease infinite;
+  -o-animation: background-color 9s ease infinite;
+  animation: background-color 9s ease infinite;
+}
+h1,h6 {
+  font:normal 1.3em 'Open Sans',Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	text-align: center;
+	position: absolute;
+	top: 5%;
+	right: 0;
+	left: 0;
+}
+*, *::after, *::before { box-sizing: border-box; }
+.selector{
+  width: 50%;
+  margin:100px auto;
+  text-align: center;
+  display:flex;
+  label{
+    padding: 1em;
+    margin: 0 .2em;
+    flex: 1;
+    border: 1px solid rgba(254, 254, 254, 0.6);
+    transition: all .15s ease-in-out;
+  }
+}
+.wrapper{
+  position: absolute;
+  left: 50%;
+  // top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 40px;
+  display: block;
+  overflow: hidden;
+  span{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4df5c4;
+    display: inline-block;
+    position: absolute;
+    transform:translateX(0px) translate3d(0,0,0);
+    animation: 0.5s circleAnimation infinite ease-in-out;
+  }
+}
+@for $i from 1 through 10{
+  .wrapper-#{$i}{
+    top: 35% + ($i - 1) * 5%;
+  }
+}
+
+
+//animate the dots
+@mixin CircleAnimation($i, $animTime, $totalTime, $delay){
+  @keyframes circle#{$i}{
+    0%, #{($i * $delay)/$totalTime * 100}% {
+        transform: translateX(0);
+      }
+    #{($i * $delay + $animTime)/$totalTime * 100}%, 100% {
+        transform: translateX(30px);
+      }
+    }
+}
+$animTime: 0.5s;
+$totalTime: 6s;
+$staggerTime: 0.15s;
+$count:23;//the amount of spans minus 1.
+@for $i from 0 through $count {
+  @include CircleAnimation($i, $animTime, $totalTime, $staggerTime);
+  span:nth-child( #{($i + 1)} ){
+    animation: circle#{($count - $i)} $totalTime infinite;
+    left: #{$i * 30 - 30 }px;
+  }
+
+}
+
+// background color gradient animation
+@mixin background-color{
+  0%{background-position:0% 5%}
+  50%{background-position:100% 96%}
+  100%{background-position:0% 5%}
+}
+@-webkit-keyframes background-color { @include background-color }
+@-moz-keyframes background-color {@include background-color}
+@-o-keyframes background-color {@include background-color}
+@keyframes background-color {@include background-color}
